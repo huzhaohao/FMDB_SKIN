@@ -89,7 +89,7 @@ static DataBaseManager* manager;
         for (NSString *key in arrayP) {
             NSString *value = [set stringForColumn:key];
             [dic setValue:value forKey:key];
-            NSLog(@"%@ = %@",key,value);
+//            NSLog(@"%@ = %@",key,value);
         }
         NSString *value = [set stringForColumn:@"UID"];
         model.UID = [value integerValue];
@@ -101,9 +101,13 @@ static DataBaseManager* manager;
 
 #pragma mark --通过字符串创建字符串的setter方法，并返回--
 - (SEL)creatSetterWithPropertyName:(NSString *)properyName {
+
+    NSString *temp = [properyName substringToIndex:1];
+    NSString *temp2 = [properyName substringFromIndex:1];
     //首字母大写
-    properyName = properyName.capitalizedString;
-    properyName = [NSString stringWithFormat:@"set%@:",properyName];
+    temp = temp.capitalizedString;
+    properyName = [NSString stringWithFormat:@"set%@%@:",temp,temp2];
+//     NSLog(@"%@ == %@  %@",temp,temp2,properyName);
     return NSSelectorFromString(properyName);
 }
 #pragma mark --把字典中的value赋值给实体类的属性---

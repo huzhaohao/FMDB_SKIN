@@ -34,8 +34,14 @@
     [demoModel2 initFMDB];
     demoModel2 *obj2 = [[demoModel2 alloc] init];
     obj2.name2 = @"BB";
+    obj2.nameTir = @"xx";
+    obj2.a = @"3";
     [obj2 insertData];
-    NSArray *array2 =  [obj2 findAllData];;
+    NSArray *array2 =  [obj2 findAllData];
+    for (demoModel2 *object in array2) {
+        [object deleteDate];
+        NSLog(@"a = %@",obj2.a);
+    }
     NSLog(@"%@",array2);
 
 }
