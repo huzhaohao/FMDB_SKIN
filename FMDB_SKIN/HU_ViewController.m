@@ -22,6 +22,8 @@
     self.view.backgroundColor = [UIColor orangeColor];
     [demoModel initFMDB];
     demoModel *obj = [[demoModel alloc] init];
+    obj.bb =3;
+    obj.gg = 2;
     obj.name = @"BBC2";
     [obj insertData];
     NSArray *array =  [obj findAllData];;
@@ -30,17 +32,18 @@
         object.name =@"doubi";
         NSLog(@"UID = %ld",object.UID);
         [object updateData];
+        [object deleteDate];
     }
     [demoModel2 initFMDB];
     demoModel2 *obj2 = [[demoModel2 alloc] init];
     obj2.name2 = @"BB";
     obj2.nameTir = @"xx";
-    obj2.a = @"3";
+    obj2.namea = @"3";
     [obj2 insertData];
     NSArray *array2 =  [obj2 findAllData];
     for (demoModel2 *object in array2) {
         [object deleteDate];
-        NSLog(@"a = %@",obj2.a);
+        NSLog(@"a = %@",obj2.namea);
     }
     NSLog(@"%@",array2);
 

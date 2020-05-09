@@ -79,6 +79,7 @@ static DataBaseManager* manager;
     [manager updateDataWithTable:name columns:dic condition:self.UID];
 }
 - (NSArray *)findAllData {
+
     NSString *name = NSStringFromClass([self class]);
     FMResultSet *set =  [manager findDataFromTable:name];
     NSMutableArray *array = [[NSMutableArray alloc] init];
@@ -89,7 +90,8 @@ static DataBaseManager* manager;
         for (NSString *key in arrayP) {
             NSString *value = [set stringForColumn:key];
             [dic setValue:value forKey:key];
-//            NSLog(@"%@ = %@",key,value);
+          NSString *s =  [self checkPropertyName:self propertyName:key];
+            NSLog(@"%@ = %@",key,s);
         }
         NSString *value = [set stringForColumn:@"UID"];
         model.UID = [value integerValue];
@@ -167,5 +169,92 @@ static DataBaseManager* manager;
     free(properties);
     return propertiesArray;
 }
+/**
+  * 返回对象中属性的类型
+  * @return NSString 返回属性的类型
+ **/
+- (NSString*)checkPropertyName:(id) obj propertyName:(NSString *)name {
+    NSString* propertyType;
+    unsigned int propertyCount;
+    objc_property_t* properties = class_copyPropertyList([obj class], &propertyCount);
+    for(int i=0;i<propertyCount;i++){
+        objc_property_t property = properties[i];
+        const char * property_attr = property_getAttributes(property);
+        //属性名称
+        const char* propertyName = property_getName(property);
+        NSString* propertyNameStr = [NSString stringWithUTF8String:propertyName];
+        if (property_attr[1] == '@') {
+             //属性对应的类型名字
+            char* typeEncoding = property_copyAttributeValue(property,"T");
+            NSString* typeEncodingStr = [NSString stringWithUTF8String:typeEncoding];
+            typeEncodingStr = [typeEncodingStr stringByReplacingOccurrencesOfString:@"@" withString:@""];
+            typeEncodingStr = [typeEncodingStr stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+            typeEncodingStr = [typeEncodingStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            if ([name isEqualToString:propertyNameStr]) {
+                propertyType = typeEncodingStr;
+                NSLog(@"property_data_type1 %@ =%@",propertyNameStr,propertyType);
+                break;
+            }
+        } else {
+            if ([name isEqualToString:propertyNameStr]) {
+                char * realType = [self getPropertyRealType:property_attr];
+                NSString *property_data_type = [NSString stringWithFormat:@"%s", realType];
+                propertyType = property_data_type;
+                NSLog(@"property_data_type2 %@ =%@",propertyNameStr,property_data_type);
+                 break;
+             }
+        }
+    }
+    free(properties);
+
+    return propertyType;
+}
+
+- (char *)getPropertyRealType:(const char *)property_attr {
+    char * type;
+    char t = property_attr[1];
+    char d[2] = {t,'\0'};
+    if (strcmp(d, @encode(char)) == 0) {
+        type = "char";
+    } else if (strcmp( d, @encode(int)) == 0) {
+        type = "int";
+    } else if (strcmp( d, @encode(short)) == 0) {
+        type = "short";
+    } else if (strcmp( d, @encode(long)) == 0) {
+        type = "long";
+    } else if (strcmp( d, @encode(long long)) == 0) {
+        type = "long long";
+    } else if (strcmp( d, @encode(unsigned char)) == 0) {
+        type = "unsigned char";
+    } else if (strcmp( d, @encode(unsigned int)) == 0) {
+        type = "unsigned int";
+    } else if (strcmp( d, @encode(unsigned short)) == 0) {
+        type = "unsigned short";
+    } else if (strcmp( d, @encode(unsigned long)) == 0) {
+        type = "unsigned long";
+    } else if (strcmp( d, @encode(unsigned long long)) == 0) {
+        type = "unsigned long long";
+    } else if (strcmp( d, @encode(float)) == 0) {
+        type = "float";
+    } else if (strcmp( d, @encode(double)) == 0) {
+        type = "double";
+    } else if (strcmp( d, @encode(_Bool)) == 0 || strcmp( d, @encode(bool)) == 0) {
+        type = "BOOL";
+    } else if (strcmp( d, @encode(void)) == 0) {
+        type = "void";
+    } else if (strcmp( d, @encode(char *)) == 0) {
+        type = "char *";
+    } else if (strcmp( d, @encode(id)) == 0) {
+        type = "id";
+    } else if (strcmp( d, @encode(Class)) == 0) {
+        type = "Class";
+    } else if (strcmp( d, @encode(SEL)) == 0) {
+        type = "SEL";
+    } else {
+        type = "";
+    }
+    return type;
+}
+
 
 @end

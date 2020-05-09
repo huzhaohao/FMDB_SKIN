@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface demoModel2 : NSObject
 
 @property (nonatomic)NSString *name2;
-@property (nonatomic)NSString *a;
+@property (nonatomic)NSString *namea;
 @property (nonatomic)NSString *nameTir;
 
 
