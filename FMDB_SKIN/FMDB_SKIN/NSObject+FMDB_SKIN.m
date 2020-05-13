@@ -7,6 +7,7 @@
 //
 
 #import "NSObject+FMDB_SKIN.h"
+#import <UIKit/UIKit.h>
 #import "DataBaseManager.h"
 /**表储存的位置*/
 #define PATH [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/cache2.db"]
@@ -47,8 +48,17 @@ static DataBaseManager* manager;
     NSString *name = NSStringFromClass([self class]);
     NSArray *array = [self getAllProperties];
     NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
-    for (NSString *object in array ) {
-        [dic setValue:@"varchar(100)" forKey:object];
+    for (NSString *key in array ) {
+        NSString *type =  [self checkPropertyName:self propertyName:key];
+        NSLog(@"%@ = %@",key,type);
+        if ([type isEqualToString:@"UIImage"]) {
+            NSString *tmep = [NSString stringWithFormat:@"varbinary(%ld)",(long)1024*1024*10];
+            [dic setValue:tmep forKey:key];
+//            [dic setValue:@"varbinary(100000)" forKey:object];
+        } else {
+            [dic setValue:@"varchar(100)" forKey:key];
+        }
+
     }
     BOOL ret = [manager createTableWithName:name columns:dic];
     if (ret) {
@@ -88,10 +98,17 @@ static DataBaseManager* manager;
         NSObject *model = [[[self class] alloc] init];
         NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
         for (NSString *key in arrayP) {
-            NSString *value = [set stringForColumn:key];
-            [dic setValue:value forKey:key];
-          NSString *s =  [self checkPropertyName:self propertyName:key];
-            NSLog(@"%@ = %@",key,s);
+            NSString *type =  [self checkPropertyName:self propertyName:key];
+            if ([type isEqualToString:@"UIImage"]) {
+                NSData *value = [set dataForColumn:key];
+                UIImage *img = [[UIImage alloc] initWithData:value];
+                [dic setValue:img forKey:key];
+            } else {
+                NSString *value = [set stringForColumn:key];
+                [dic setValue:value forKey:key];
+                NSLog(@"%@ = %@",key,value);
+            }
+
         }
         NSString *value = [set stringForColumn:@"UID"];
         model.UID = [value integerValue];
@@ -109,7 +126,6 @@ static DataBaseManager* manager;
     //首字母大写
     temp = temp.capitalizedString;
     properyName = [NSString stringWithFormat:@"set%@%@:",temp,temp2];
-//     NSLog(@"%@ == %@  %@",temp,temp2,properyName);
     return NSSelectorFromString(properyName);
 }
 #pragma mark --把字典中的value赋值给实体类的属性---
@@ -123,10 +139,18 @@ static DataBaseManager* manager;
         //获取实体类的setter方法
         SEL setSel = [self creatSetterWithPropertyName:keyArray[i]];
         if ([self respondsToSelector:setSel]){
-            //获取字典中key对应的value
-            NSString * value = [NSString stringWithFormat:@"%@",dictionary[keyArray[i]]];
-            //把value通过setter方法赋值给实体类的属性
-            [self performSelectorOnMainThread:setSel withObject:value waitUntilDone:[NSThread isMainThread]];
+            NSString *type =  [self checkPropertyName:self propertyName:keyArray[i]];
+            if ([type isEqualToString:@"UIImage"]) {
+               UIImage *value = dictionary[keyArray[i]];
+                //把value通过setter方法赋值给实体类的属性
+                [self performSelectorOnMainThread:setSel withObject:value waitUntilDone:[NSThread isMainThread]];
+            } else {
+                //获取字典中key对应的value
+                NSString * value = [NSString stringWithFormat:@"%@",dictionary[keyArray[i]]];
+                //把value通过setter方法赋值给实体类的属性
+                [self performSelectorOnMainThread:setSel withObject:value waitUntilDone:[NSThread isMainThread]];
+            }
+
         }
     }
 }
@@ -144,11 +168,23 @@ static DataBaseManager* manager;
         const char* propertyName =property_getName(property);
         //转换成NSString
         NSString *key = [NSString stringWithUTF8String:propertyName];
-        //获取属性对应的value
-        id value = [self valueForKey:key];
-        if (value){
-            [props setObject:value forKey:key];
+
+        NSString *type =  [self checkPropertyName:self propertyName:key];
+        if ([type isEqualToString:@"UIImage"]) {
+            //获取属性对应的value
+            UIImage* value = [self valueForKey:key];
+            if (value){
+                NSData *data = UIImagePNGRepresentation(value);
+                [props setObject:data forKey:key];
+            }
+        } else {
+            //获取属性对应的value
+            id value = [self valueForKey:key];
+            if (value){
+                [props setObject:value forKey:key];
+            }
         }
+
     }
     //释放结构体数组内存
     free(properties);
@@ -192,7 +228,7 @@ static DataBaseManager* manager;
             typeEncodingStr = [typeEncodingStr stringByReplacingOccurrencesOfString:@"\"" withString:@""];
             if ([name isEqualToString:propertyNameStr]) {
                 propertyType = typeEncodingStr;
-                NSLog(@"property_data_type1 %@ =%@",propertyNameStr,propertyType);
+//                NSLog(@"property_data_type1 %@ =%@",propertyNameStr,propertyType);
                 break;
             }
         } else {
@@ -200,7 +236,7 @@ static DataBaseManager* manager;
                 char * realType = [self getPropertyRealType:property_attr];
                 NSString *property_data_type = [NSString stringWithFormat:@"%s", realType];
                 propertyType = property_data_type;
-                NSLog(@"property_data_type2 %@ =%@",propertyNameStr,property_data_type);
+//                NSLog(@"property_data_type2 %@ =%@",propertyNameStr,property_data_type);
                  break;
              }
         }

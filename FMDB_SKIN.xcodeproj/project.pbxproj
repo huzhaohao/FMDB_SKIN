@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9D0DC374EF7F1C81BE6811C9 /* Pods_FMDB_SKIN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E1F772902F3719FB9EFC8E62 /* Pods_FMDB_SKIN.framework */; };
+		B10DA9952467E33100624969 /* mogut.png in Resources */ = {isa = PBXBuildFile; fileRef = B10DA9942467E33100624969 /* mogut.png */; };
 		B110F4BC239E66E4005226A8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B110F4BB239E66E4005226A8 /* AppDelegate.m */; };
 		B110F4C2239E66E4005226A8 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B110F4C1239E66E4005226A8 /* ViewController.m */; };
 		B110F4C5239E66E4005226A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B110F4C3239E66E4005226A8 /* Main.storyboard */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B10DA9942467E33100624969 /* mogut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mogut.png; sourceTree = "<group>"; };
 		B110F4B7239E66E4005226A8 /* FMDB_SKIN.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FMDB_SKIN.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B110F4BA239E66E4005226A8 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B110F4BB239E66E4005226A8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 		B110F4B9239E66E4005226A8 /* FMDB_SKIN */ = {
 			isa = PBXGroup;
 			children = (
+				B10DA9942467E33100624969 /* mogut.png */,
 				B187916E239F99A500AE1DB8 /* FMDB_SKIN */,
 				B110F4BA239E66E4005226A8 /* AppDelegate.h */,
 				B110F4BB239E66E4005226A8 /* AppDelegate.m */,
@@ -187,6 +190,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B10DA9952467E33100624969 /* mogut.png in Resources */,
 				B110F4CA239E66E6005226A8 /* LaunchScreen.storyboard in Resources */,
 				B110F4C7239E66E6005226A8 /* Assets.xcassets in Resources */,
 				B110F4C5239E66E4005226A8 /* Main.storyboard in Resources */,

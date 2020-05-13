@@ -25,14 +25,16 @@
     obj.bb =3;
     obj.gg = 2;
     obj.name = @"BBC2";
+    obj.fff = [UIImage imageNamed:@"mogut"];
     [obj insertData];
     NSArray *array =  [obj findAllData];;
     NSLog(@"%@",array);
     for (demoModel *object in array) {
+        UIImageView *imgV = [[UIImageView alloc] initWithFrame:CGRectMake(200, 100, 200, 200)];
+        imgV.image = object.fff;
+        [self.view addSubview:imgV];
         object.name =@"doubi";
         NSLog(@"UID = %ld",object.UID);
-        [object updateData];
-        [object deleteDate];
     }
     [demoModel2 initFMDB];
     demoModel2 *obj2 = [[demoModel2 alloc] init];
