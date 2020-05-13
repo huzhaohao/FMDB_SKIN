@@ -15,7 +15,7 @@
 //类使用前需要初始化
 + (instancetype)initFMDB;
 - (void)insertData;
-- (void)deleteDate;
+- (void)deleteData;
 - (void)updateData;
 - (NSArray *)findAllData;
 

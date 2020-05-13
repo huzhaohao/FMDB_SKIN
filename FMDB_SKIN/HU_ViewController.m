@@ -44,7 +44,7 @@
     [obj2 insertData];
     NSArray *array2 =  [obj2 findAllData];
     for (demoModel2 *object in array2) {
-        [object deleteDate];
+        [object deleteData];
         NSLog(@"a = %@",obj2.namea);
     }
     NSLog(@"%@",array2);

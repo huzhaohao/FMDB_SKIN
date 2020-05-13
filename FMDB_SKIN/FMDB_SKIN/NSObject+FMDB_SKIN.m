@@ -78,7 +78,7 @@ static DataBaseManager* manager;
        NSLog(@"插入失败");
     }
 }
-- (void)deleteDate {
+- (void)deleteData {
     NSString *name = NSStringFromClass([self class]);
     NSDictionary *dic = [self getAllPropertiesAndValues];
     [manager deleteDataWithColumns:dic fromTable:name];
