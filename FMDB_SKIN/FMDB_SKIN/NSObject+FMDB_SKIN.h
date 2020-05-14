@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
+#import <objc/message.h>
 @interface NSObject (FMDB_SKIN)
 
 @property (nonatomic)NSInteger UID; //数据ID

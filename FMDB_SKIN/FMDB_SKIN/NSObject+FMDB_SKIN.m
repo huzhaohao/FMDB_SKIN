@@ -144,10 +144,24 @@ static DataBaseManager* manager;
                UIImage *value = dictionary[keyArray[i]];
                 //把value通过setter方法赋值给实体类的属性
                 [self performSelectorOnMainThread:setSel withObject:value waitUntilDone:[NSThread isMainThread]];
-            } else {
+            } else if ([type isEqualToString:@"int"]) {
+            //获取字典中key对应的value
+             NSString * value = [NSString stringWithFormat:@"%@",dictionary[keyArray[i]]];
+                int temp = [value intValue];
+                ((void (*)(id, SEL,int))objc_msgSend)(self, setSel,temp);
+            } else if ([type isEqualToString:@"long"]) {
+            //获取字典中key对应的value
+             NSString * value = [NSString stringWithFormat:@"%@",dictionary[keyArray[i]]];
+                NSInteger temp = [value integerValue];
+                ((void (*)(id, SEL,long))objc_msgSend)(self, setSel,temp);
+            } else if ([type isEqualToString:@"float"]) {
+            //获取字典中key对应的value
+             NSString * value = [NSString stringWithFormat:@"%@",dictionary[keyArray[i]]];
+                float temp = [value floatValue];
+                ((void (*)(id, SEL,float))objc_msgSend)(self, setSel,temp);
+            }  else {
                 //获取字典中key对应的value
                 NSString * value = [NSString stringWithFormat:@"%@",dictionary[keyArray[i]]];
-                //把value通过setter方法赋值给实体类的属性
                 [self performSelectorOnMainThread:setSel withObject:value waitUntilDone:[NSThread isMainThread]];
             }
 
@@ -241,6 +255,7 @@ static DataBaseManager* manager;
              }
         }
     }
+
     free(properties);
 
     return propertyType;

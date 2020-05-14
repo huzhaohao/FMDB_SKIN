@@ -22,11 +22,6 @@
     self.view.backgroundColor = [UIColor orangeColor];
     [demoModel initFMDB];
     demoModel *obj = [[demoModel alloc] init];
-    obj.bb =3;
-    obj.gg = 2;
-    obj.name = @"BBC2";
-    obj.fff = [UIImage imageNamed:@"mogut"];
-    [obj insertData];
     NSArray *array =  [obj findAllData];;
     NSLog(@"%@",array);
     for (demoModel *object in array) {
