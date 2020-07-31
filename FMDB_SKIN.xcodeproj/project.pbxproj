@@ -395,7 +395,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = S9HB39G663;
+				DEVELOPMENT_TEAM = PQSP2XJ2PP;
 				INFOPLIST_FILE = FMDB_SKIN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -413,7 +413,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = S9HB39G663;
+				DEVELOPMENT_TEAM = PQSP2XJ2PP;
 				INFOPLIST_FILE = FMDB_SKIN/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
